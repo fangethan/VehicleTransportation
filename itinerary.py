@@ -1,7 +1,8 @@
 from math import radians, cos, sin, asin, sqrt
 from city import City, create_example_cities, get_cities_by_name
 
-class Itinerary():
+
+class Itinerary:
     """
     A sequence of cities.
     """
@@ -13,8 +14,8 @@ class Itinerary():
         :param cities: a sequence of cities, possibly empty.
         :return: None
         """
-        self.cities = cities            
-    
+        self.cities = cities
+
     def total_distance(self) -> int:
         """
         Returns the total distance (in km) of the itinerary, which is
@@ -23,8 +24,8 @@ class Itinerary():
         """
         distance_total = 0
         for index in range(0, len(self.cities)):
-            if index+1 < len(self.cities): 
-                distance_total += self.cities[index].distance(self.cities[index+1])
+            if index + 1 < len(self.cities):
+                distance_total += self.cities[index].distance(self.cities[index + 1])
 
         return distance_total
 
@@ -43,7 +44,7 @@ class Itinerary():
         :param city: the city to insert
         :return: None.
         """
-        min_distance = float('inf')
+        min_distance = float("inf")
         best_index = 0
 
         # the reason the range +1 because the loop includes an additional iteration that allows for the new city to be compared to th elast city in the iternery
@@ -59,7 +60,11 @@ class Itinerary():
                 # the second value calculates distance between city and the next city
                 # the third value calculates the distance between previous city and next city
                 # we subtract to see what is the new distance if the city is inserted at this index
-                new_distance = city.distance(self.cities[index-1]) + city.distance(self.cities[index]) - self.cities[index-1].distance(self.cities[index])
+                new_distance = (
+                    city.distance(self.cities[index - 1])
+                    + city.distance(self.cities[index])
+                    - self.cities[index - 1].distance(self.cities[index])
+                )
 
             if new_distance < min_distance:
                 min_distance = new_distance
@@ -78,30 +83,32 @@ class Itinerary():
         if len(self.cities) == 0:
             route = "(" + str(Itinerary.total_distance(self)) + " km)"
             return route
-        
-        for index, city in enumerate(self.cities): 
-            if index != len(self.cities)-1:
+
+        for index, city in enumerate(self.cities):
+            if index != len(self.cities) - 1:
                 route += city.name + " -> "
             else:
                 route += city.name + " (" + str(Itinerary.total_distance(self)) + " km)"
-        
+
         return route
 
 
 if __name__ == "__main__":
     create_example_cities()
-    test_itin = Itinerary([get_cities_by_name("Melbourne")[0],get_cities_by_name("Kuala Lumpur")[0]])
+    test_itin = Itinerary(
+        [get_cities_by_name("Melbourne")[0], get_cities_by_name("Kuala Lumpur")[0]]
+    )
     print(test_itin)
 
-    #we try adding a city
+    # we try adding a city
     test_itin.append_city(get_cities_by_name("Baoding")[0])
     print(test_itin)
 
-    #we try inserting a city
+    # we try inserting a city
     test_itin.min_distance_insert_city(get_cities_by_name("Sydney")[0])
     print(test_itin)
 
-    #we try inserting another city
+    # we try inserting another city
     test_itin.min_distance_insert_city(get_cities_by_name("Canberra")[0])
     print(test_itin)
 
@@ -109,7 +116,7 @@ if __name__ == "__main__":
     # city2 = City('Sydney', (-33.8688, 151.2093), 'primary', 5000000, 2)
     # city3 = City('Brisbane', (-27.4698, 153.0251), 'primary', 2000000, 3)
     # itinerary1 = Itinerary([city1, city2, city3])
-    
+
     # city4 = City('Perth', (-31.9505, 115.8605), 'primary', 2000000, 4)
     # itinerary1.min_distance_insert_city(city4)
     # print(itinerary1)

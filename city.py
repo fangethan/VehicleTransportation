@@ -1,20 +1,21 @@
-from __future__ import annotations #https://peps.python.org/pep-0563/
+from __future__ import annotations  # https://peps.python.org/pep-0563/
 from typing import Tuple
 import math
 from geopy.distance import great_circle
 
-class City():
+
+class City:
     """
     Represents a city.
     """
 
-    #associates an id to an instance of City
+    # associates an id to an instance of City
     id_to_cities = dict()
 
     # associates city names to a list of instances of City.
     # We use a list because there may be multiple cities with the same name.
     name_to_cities = dict()
-    
+
     # list of the city instance that is found in name_to_cities
     list_of_found_cities = []
     # list of the city instances with the same city names
@@ -22,8 +23,14 @@ class City():
 
     table_headers = ["Name", "Coordinates", "City type", "Population", "City ID"]
 
-    def __init__(self, name: str, coordinates: Tuple[float, float], city_type: str,\
-                  population: int, city_id: int) -> None:
+    def __init__(
+        self,
+        name: str,
+        coordinates: Tuple[float, float],
+        city_type: str,
+        population: int,
+        city_id: int,
+    ) -> None:
         """
         Initialises a city with the given data.
 
@@ -56,7 +63,7 @@ class City():
 
             City.name_to_cities[self.name] = City.list_of_same_cities
             City.list_of_same_cities = []
-        
+
     def distance(self, other_city: City) -> int:
         """
         Returns the distance in kilometers between two cities using the great circle method,
@@ -76,7 +83,6 @@ class City():
         """
         return self.name + " (" + str(self.city_id) + ")"
 
-
     def get_table_data(self) -> list[str]:
         """
         Returns a list of data about the city.
@@ -87,7 +93,13 @@ class City():
 
         :return: A list of data about the city.
         """
-        return [self.name, str(self.coordinates), self.city_type, str(self.population), str(self.city_id)]
+        return [
+            self.name,
+            str(self.coordinates),
+            self.city_type,
+            str(self.population),
+            str(self.city_id),
+        ]
 
 
 def get_city_by_id(city_id: int) -> City | None:
@@ -107,14 +119,14 @@ def get_city_by_id(city_id: int) -> City | None:
 
 def get_cities_by_name(city_name: str) -> list[City]:
     """
-    Given the name, returns the list of cities known by this name. 
+    Given the name, returns the list of cities known by this name.
     If no city is known, returns an empty list.
 
     :param city_name: the name of the city.
-    :return: the list of cities known by this name. 
+    :return: the list of cities known by this name.
     """
     list_of_cities = City.name_to_cities
-    
+
     for city in list_of_cities.keys():
         if city == city_name:
             return list_of_cities[city]
@@ -130,10 +142,10 @@ def create_example_cities() -> None:
     City("Canberra", (-35.2931, 149.1269), "primary", 381488, 1036142029)
     City("Sydney", (-33.865, 151.2094), "admin", 4840600, 1036074917)
     City("Kuala Lumpur", (3.1478, 101.6953), "primary", 8639000, 1458988644)
-    #an example of two cities with the same name
+    # an example of two cities with the same name
     City("Santiago", (-33.45, -70.6667), "primary", 7026000, 1152554349)
-    City("Santiago",	(19.45, -70.7), "admin", 1343423, 1214985348)
-    #an example of a city without a specific city type
+    City("Santiago", (19.45, -70.7), "admin", 1343423, 1214985348)
+    # an example of a city without a specific city type
     City("Baoding", (38.8671, 115.4845), "", 11860000, 1156256829)
 
 
@@ -144,11 +156,13 @@ def test_example_cities() -> None:
     melbourne = get_city_by_id(1036533631)
 
     sydney = get_cities_by_name("Sydney")[0]
-    
+
     print(melbourne)
     print(f"Melbourne's name is {melbourne.name}")
     print(f"Melbourne's population is {melbourne.population}")
-    print(f"The distance between Melbourne and Sydney is {melbourne.distance(sydney)} km")
+    print(
+        f"The distance between Melbourne and Sydney is {melbourne.distance(sydney)} km"
+    )
 
 
 if __name__ == "__main__":

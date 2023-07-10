@@ -2,6 +2,7 @@ import csv
 from city import City
 from country import Country
 
+
 def create_cities_countries_from_csv(path_to_csv: str) -> None:
     """
     Reads a CSV file given its path and creates instances of City and Country for each line.
@@ -13,14 +14,14 @@ def create_cities_countries_from_csv(path_to_csv: str) -> None:
         # retrieve all the headers value and skips the line as well
         header = next(reader)
 
-        city_ascii_index = -1   
-        lat_index = -1   
-        long_index = -1   
-        country_name_index = -1   
-        country_iso3_index = -1   
-        city_type_index = -1   
-        population_index = -1   
-        city_id_index = -1   
+        city_ascii_index = -1
+        lat_index = -1
+        long_index = -1
+        country_name_index = -1
+        country_iso3_index = -1
+        city_type_index = -1
+        population_index = -1
+        city_id_index = -1
 
         # go through the header, and assign the index variables to the index found
         for index, header_element in enumerate(header):
@@ -35,18 +36,18 @@ def create_cities_countries_from_csv(path_to_csv: str) -> None:
             elif header_element == "iso3":
                 country_iso3_index = index
             elif header_element == "capital":
-                city_type_index = index 
+                city_type_index = index
             elif header_element == "population":
                 population_index = index
             elif header_element == "id":
                 city_id_index = index
-        
+
         # go through the values in the csv file, and assign each variable their value with now the index found
         # parsing was required for a few variables due to later needing it to be used as params for creating instances of certain classes
         for row in reader:
             city_name = row[city_ascii_index]
-            coordinates = (float(row[lat_index]), float(row[long_index])) 
-            country_name = row[country_name_index] 
+            coordinates = (float(row[lat_index]), float(row[long_index]))
+            country_name = row[country_name_index]
             country_iso3 = row[country_iso3_index]
             city_type = row[city_type_index]
             # need the if statement, as some population was not provided in the csv file
@@ -56,7 +57,7 @@ def create_cities_countries_from_csv(path_to_csv: str) -> None:
             else:
                 population = 0
             city_id = int(row[city_id_index])
-            
+
             # create a city instance
             city = City(city_name, coordinates, city_type, population, city_id)
 

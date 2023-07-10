@@ -4,6 +4,7 @@ from city import City, get_city_by_id, get_cities_by_name
 from country import Country, find_country_of_city, create_example_countries
 from itinerary import Itinerary
 
+
 class Vehicle(ABC):
     """
     A Vehicle defined by a mode of transportation, which results in a specific duration.
@@ -35,11 +36,13 @@ class Vehicle(ABC):
         hours = 0
         if itinerary is not None:
             for index in range(0, len(itinerary.cities)):
-                if index+1 < len(itinerary.cities):
-                    hours += self.compute_travel_time(itinerary.cities[index], itinerary.cities[index+1])
-            
+                if index + 1 < len(itinerary.cities):
+                    hours += self.compute_travel_time(
+                        itinerary.cities[index], itinerary.cities[index + 1]
+                    )
+
         return hours
-    
+
     @abstractmethod
     def __str__(self) -> str:
         """
@@ -48,6 +51,7 @@ class Vehicle(ABC):
         :return: the string representation of the vehicle.
         """
         pass
+
 
 class CrappyCrepeCar(Vehicle):
     """
@@ -83,7 +87,8 @@ class CrappyCrepeCar(Vehicle):
 
         :return: the string representation of the vehicle.
         """
-        return "CrappyCrepeCar " +  "(" + str(self.speed) + " km/h)"
+        return "CrappyCrepeCar " + "(" + str(self.speed) + " km/h)"
+
 
 class DiplomacyDonutDinghy(Vehicle):
     """
@@ -121,7 +126,9 @@ class DiplomacyDonutDinghy(Vehicle):
             if departure in cities and arrival in cities:
                 hours = math.ceil(departure.distance(arrival) / self.in_country_speed)
             if departure.city_type == "primary" and arrival.city_type == "primary":
-                hours = math.ceil(departure.distance(arrival) / self.between_primary_speed)
+                hours = math.ceil(
+                    departure.distance(arrival) / self.between_primary_speed
+                )
         return hours
 
     def __str__(self) -> str:
@@ -131,7 +138,14 @@ class DiplomacyDonutDinghy(Vehicle):
 
         :return: the string representation of the vehicle.
         """
-        return "DiplomacyDonutDinghy " +  "(" + str(self.in_country_speed) + " km/h | " + str(self.between_primary_speed) + " km/h)"
+        return (
+            "DiplomacyDonutDinghy "
+            + "("
+            + str(self.in_country_speed)
+            + " km/h | "
+            + str(self.between_primary_speed)
+            + " km/h)"
+        )
 
 
 class TeleportingTarteTrolley(Vehicle):
@@ -141,12 +155,12 @@ class TeleportingTarteTrolley(Vehicle):
         - Travels in fixed time between two cities within the maximum distance.
     """
 
-    def __init__(self, travel_time:int, max_distance: int) -> None:
+    def __init__(self, travel_time: int, max_distance: int) -> None:
         """
         Creates a TeleportingTarteTrolley with a distance limit in km.
 
         :param travel_time: the time it takes to travel.
-        :param max_distance: the maximum distance it can travel.u 
+        :param max_distance: the maximum distance it can travel.u
         """
         self.travel_time = travel_time
         self.max_distance = max_distance
@@ -168,7 +182,7 @@ class TeleportingTarteTrolley(Vehicle):
             hours = math.ceil(self.travel_time)
 
         return hours
-        
+
     def __str__(self) -> str:
         """
         Returns the class name and the parameters of the vehicle in parentheses.
@@ -176,7 +190,14 @@ class TeleportingTarteTrolley(Vehicle):
 
         :return: the string representation of the vehicle.
         """
-        return "TeleportingTarteTrolley " +  "(" + str(self.travel_time) + " h | " + str(self.max_distance) + " km)"
+        return (
+            "TeleportingTarteTrolley "
+            + "("
+            + str(self.travel_time)
+            + " h | "
+            + str(self.max_distance)
+            + " km)"
+        )
 
 
 def create_example_vehicles() -> list[Vehicle]:
@@ -185,19 +206,24 @@ def create_example_vehicles() -> list[Vehicle]:
 
     :return: a list of 3 vehicles.
     """
-    return [CrappyCrepeCar(200), DiplomacyDonutDinghy(100, 500), TeleportingTarteTrolley(3, 2000)]
+    return [
+        CrappyCrepeCar(200),
+        DiplomacyDonutDinghy(100, 500),
+        TeleportingTarteTrolley(3, 2000),
+    ]
+
 
 if __name__ == "__main__":
-    #we create some example cities
+    # we create some example cities
     create_example_countries()
 
     from_cities = set()
     for city_id in [1036533631, 1036142029, 1458988644]:
         from_cities.add(get_city_by_id(city_id))
 
-    #we create some vehicles
+    # we create some vehicles
     vehicles = create_example_vehicles()
-    
+
     # test_itin = Itinerary([get_cities_by_name("Melbourne")[0],get_cities_by_name("Kuala Lumpur")[0]])
     # print(vehicles[0].compute_itinerary_time(test_itin))
 
@@ -207,4 +233,6 @@ if __name__ == "__main__":
         for to_city in to_cities:
             print(f"{from_city} to {to_city}:")
             for vehicle in vehicles:
-                print(f"\t{vehicle.compute_travel_time(from_city, to_city)} hours with {vehicle}.")
+                print(
+                    f"\t{vehicle.compute_travel_time(from_city, to_city)} hours with {vehicle}."
+                )

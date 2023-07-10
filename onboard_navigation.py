@@ -4,15 +4,16 @@ from csv_parsing import create_cities_countries_from_csv
 from path_finding import find_shortest_path
 from map_plotting import plot_itinerary
 
+
 def onboard_navigation_user():
-    #we create some vehicles
+    # we create some vehicles
     vehicles = create_example_vehicles()
     # create an array to hold our vehicle_options_input_list
     vehicle_options_input_list = []
 
     # get a list of all our vehicle_options_input_list
-    for index in range(0,len(vehicles)):
-        vehicle_options_input_list.append(index+1)
+    for index in range(0, len(vehicles)):
+        vehicle_options_input_list.append(index + 1)
 
     valid_vehicle = False
     valid_departure_city = False
@@ -22,7 +23,13 @@ def onboard_navigation_user():
     # except catches any ValueErrors of any invalid inputs that are not part of the vehicle_options_input_list list
     while not valid_vehicle:
         try:
-            vehicle_option = int(input("Choose a vehicle (Options are " + str(vehicle_options_input_list) + "): "))
+            vehicle_option = int(
+                input(
+                    "Choose a vehicle (Options are "
+                    + str(vehicle_options_input_list)
+                    + "): "
+                )
+            )
             if vehicle_option not in vehicle_options_input_list:
                 raise ValueError
             valid_vehicle = True
@@ -56,14 +63,17 @@ def onboard_navigation_user():
             print("Invalid arrival city. Please enter a valid city name.")
 
     # after all inputs are valid, we find the shortest path
-    itinerary = find_shortest_path(vehicles[vehicle_option-1], departure_city_chosen[0], arrival_city_chosen[0])
+    itinerary = find_shortest_path(
+        vehicles[vehicle_option - 1], departure_city_chosen[0], arrival_city_chosen[0]
+    )
 
     # check if the shortest path found is not none
     #  if it isn't, we plot a map of the shortest path
     if itinerary is not None:
         plot_itinerary(itinerary)
-    
+
     exit()
+
 
 if __name__ == "__main__":
     create_cities_countries_from_csv("worldcities_truncated.csv")

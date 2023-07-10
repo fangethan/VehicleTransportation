@@ -1,12 +1,13 @@
 from tabulate import tabulate
 from city import City, create_example_cities
 
-class Country():
+
+class Country:
     """
     Represents a country.
     """
 
-    name_to_countries = dict() # a dict that associates country names to instances.
+    name_to_countries = dict()  # a dict that associates country names to instances.
 
     # dictionary to associate cities that are associated to that country
     # key is country name
@@ -19,11 +20,11 @@ class Country():
 
         :param country_name: The name of the country
         :param country_iso3: The unique 3-letter identifier of this country
-	    :return: None
+            :return: None
         """
         self.name = country_name
         self.iso3 = country_iso3
-        
+
         Country.name_to_countries[self.name] = self
 
     def add_city(self, city: City) -> None:
@@ -37,15 +38,14 @@ class Country():
         # if statement is to check if a country key exist or not first to see if its a new country needed to be added along with the city
         # if not, we just add a new city instance to the country key and update the dict
         if self.name not in Country.countries_and_their_cities:
-            Country.countries_and_their_cities.update({self.name: [city] })
+            Country.countries_and_their_cities.update({self.name: [city]})
         else:
             old_value = Country.countries_and_their_cities[self.name]
             new_list = []
             for value in old_value:
                 new_list.append(value)
             new_list.append(city)
-            Country.countries_and_their_cities.update({self.name: new_list })
-        
+            Country.countries_and_their_cities.update({self.name: new_list})
 
     def get_cities(self, city_type: list[str] = None) -> list[City]:
         """
@@ -69,7 +69,7 @@ class Country():
         elif self.name in Country.countries_and_their_cities.keys():
             for city in Country.countries_and_their_cities[self.name]:
                 city_list.append(city)
-        
+
         return city_list
 
     def print_cities(self) -> None:
@@ -81,17 +81,26 @@ class Country():
         """
         print("Cities of " + self.name)
 
-        headers=["Order", "Name", "Coordinates","City type", "Population", "City ID"]
+        headers = ["Order", "Name", "Coordinates", "City type", "Population", "City ID"]
         table = [headers]
 
         cities = Country.countries_and_their_cities[self.name]
         cities.sort(key=lambda city: city.population, reverse=True)
-        
+
         for index, city in enumerate(cities):
-            table.append([str(index), city.name, str(city.coordinates), city.city_type, str(city.population), str(city.city_id)])
-                
+            table.append(
+                [
+                    str(index),
+                    city.name,
+                    str(city.coordinates),
+                    city.city_type,
+                    str(city.population),
+                    str(city.city_id),
+                ]
+            )
+
         print(tabulate(table, numalign="left"))
-    
+
     def __str__(self) -> str:
         """
         Returns the name of the country.
@@ -113,7 +122,7 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
         new_country.add_city(city)
     else:
         Country.name_to_countries[country_name].add_city(city)
- 
+
 
 def find_country_of_city(city: City) -> Country:
     """
@@ -124,10 +133,11 @@ def find_country_of_city(city: City) -> Country:
     :return: The country where the city is.
     """
     for country in Country.countries_and_their_cities.keys():
-        for index in range(0,len(Country.countries_and_their_cities[country])):
+        for index in range(0, len(Country.countries_and_their_cities[country])):
             if Country.countries_and_their_cities[country][index] == city:
                 if country in Country.name_to_countries:
                     return Country.name_to_countries[country]
+
 
 def create_example_countries() -> None:
     """
@@ -139,10 +149,10 @@ def create_example_countries() -> None:
     kuala_lumpur = City.name_to_cities["Kuala Lumpur"][0]
     malaysia.add_city(kuala_lumpur)
     print(malaysia)
-    
+
     for city_name in ["Melbourne", "Canberra", "Sydney"]:
         add_city_to_country(City.name_to_cities[city_name][0], "Australia", "AUS")
-    
+
     malaysia.get_cities()
 
     # # australia = Country("Australia", "AUS")
@@ -156,6 +166,7 @@ def create_example_countries() -> None:
 
     # # print(australia.get_cities())
     # print(new_zealand.get_cities())
+
 
 def test_example_countries() -> None:
     """
